@@ -369,7 +369,6 @@ if (user != null) {
       counter = 0;
       drinks.pull();
     }
-    $("#userName").append("Welcome " + profile.displayName);
 
     historySearch.write();
 
@@ -387,8 +386,6 @@ if (user != null) {
   // ref google login button.
   $("#googleLogin").on("click", function () {
     googleLogin();
-    $("#userName").append("Welcome " + profile.displayName);
-
   });
 
   // });
