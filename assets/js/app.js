@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
 
   var storeResponse;
   var storeDrinks = []
@@ -7,17 +7,17 @@ $(document).ready(function() {
   var countStart = 0;
   var countEnd = 3;
   var type = "";
-  
-  
+
+
   $('#main-container').hide();
   $('#flavorize-button').hide();
   $('#search-div').hide();
   $('#lessButton').hide();
   $('#moreButton').hide();
   $('.parallax').parallax();
-  
+
   var general = {
-    mlButton: function() {
+    mlButton: function () {
       if (countStart === 0) {
         $('#lessButton').hide();
         $('#moreButton').hide();
@@ -32,7 +32,7 @@ $(document).ready(function() {
         $('#moreButton').hide();
       }
     },
-    more: function() { //Shows 3 more recipies.
+    more: function () { //Shows 3 more recipies.
       countEnd += 3;
       if (type === "food") {
         food.print();
@@ -41,8 +41,8 @@ $(document).ready(function() {
         drinks.pullRecipes();
       }
     },
-  
-    less: function() {
+
+    less: function () {
       countStart -= 6;
       countEnd -= 3;
       if (type === "food") {
@@ -54,7 +54,7 @@ $(document).ready(function() {
     }
   }
 
-        //Saved to firebase
+  //Saved to firebase
   // Initialize Firebase
   var config = {
     apiKey: "AIzaSyA4z9UNz-9YYl6NIOOX9r7e78bXl8n0kFs",
@@ -83,9 +83,63 @@ $(document).ready(function() {
     });
   }
 
-  
+  var user = firebase.auth().currentUser;
+  if (user != null) {
+    user.providerData.forEach(function (profile) {
+      console.log("  Name: " + profile.displayName);
+      console.log("  Email: " + profile.email);
+    });
+  }
+  var historySearch = {
+    read: function () {
+      database.ref().limitToLast(5).on('child_added', function (snapshot) {
+        var ingredient1 = snapshot.val().ingredient;
+        $("#userEmail").append("<p>" + ingredient1 + "</p>");
+      });
+
+    },
+    write: function () {
+      var ingredientFb = $("#ingredients").val().trim();
+      console.log(ingredientFb);
+
+      var savedSearch = {
+        ingredient: ingredientFb
+      }
+
+      database.ref().push(savedSearch);
+    }
+  }
+
+  var topRecipes = {
+
+    write: function () {
+      function snapshotToArray(snapshot) {
+        var returnArr = [];
+
+        snapshot.forEach(function (childSnapshot) {
+          var item = childSnapshot.val().ingredient;
+          returnArr.push(item);
+        });
+        return returnArr;
+      };
+      firebase.database().ref().on("value", function (snapshot) {
+        var topTrend = snapshotToArray(snapshot);
+        console.log(topTrend);
+
+        for (var i = 0; i < topTrend.length; i++) {
+          if (topTrend[i + 3] == topTrend[i]) {
+            $("#topIn").append("<p>" + topTrend[i] + "</p>");
+          }
+        }
+      })
+    }
+  }
+  topRecipes.write();
+  historySearch.read();
+
+
   var food = {
-    pull: function() {
+    pull: function () {
       countStart = 0;
       countEnd = 3; //Returns countStart to 0
       var ingredients = $("#ingredients").val(); //Assign text typed by user to variable ingridients.
@@ -97,13 +151,13 @@ $(document).ready(function() {
       $.ajax({ //Using ajax to get the json that contains the recipies.
         url: queryUrl,
         method: "GET"
-      }).then(function(response) { //Stores the JSON obtained in the temp variable "response"
+      }).then(function (response) { //Stores the JSON obtained in the temp variable "response"
         storeResponse = response; //Saves JSON response to local variable in case we need to use response in the future.
         console.log(storeResponse);
         food.print(); //Calls the "printer"
       })
     },
-    print: function() {
+    print: function () {
       $("#top-recipes").empty(); //Cleans DIV where car's are gonna be generated
       for (countStart; countStart < countEnd; countStart++) { //Runs a defined amount of times to create Cards.
         var col = $("<div>");
@@ -121,13 +175,13 @@ $(document).ready(function() {
         card.attr('class', "card"); //Creates div for card.
         cardImg.attr('class', "card-image waves-effect waves-block waves-light"); //Add classes for Materialize CSS to the img div
         cardImgSrc.attr('class', 'activator'); //Add classes to image Source.
-        cardImgSrc.attr('id','card-image'); //Adds ID to modify witdh on CSS.
+        cardImgSrc.attr('id', 'card-image'); //Adds ID to modify witdh on CSS.
         cardImgSrc.attr('src', storeResponse.hits[countStart].recipe.image); //Adds url with source of image.
         cardImg.append(cardImgSrc); //Append child div into the 'mother div'
         cardCont.attr('class', 'card-content'); //Adds materialize classes.
         cardContSp.attr('class', 'card-title activator grey-text text-darken-4');
         cardContSp.append(storeResponse.hits[countStart].recipe.label + '<i class="material-icons right">more_vert</i>');
-        cardContUrl.append('<a href="' + storeResponse.hits[countStart].recipe.url +'" target="_blank">Instructions.</a>');
+        cardContUrl.append('<a href="' + storeResponse.hits[countStart].recipe.url + '" target="_blank">Instructions.</a>');
         cardCont.append(cardContSp); // Appends div inside 'mother div'
         cardCont.append(cardContUrl); // Appends div inside 'mother div'
         cardRev.attr('class', 'card-reveal'); //Adds classes of Materialize
@@ -149,9 +203,9 @@ $(document).ready(function() {
       general.mlButton(); //Calls function to display more or less button.
     },
   };
-  
+
   var drinks = {
-    pull: function() {
+    pull: function () {
       countStart = 0; //Reset Start Count to 0.
       countEnd = 3;
       var ingredients = $("#ingredients").val().trim(); //Get the ingridients typed by user.
@@ -162,14 +216,14 @@ $(document).ready(function() {
       $.ajax({ //Using ajax to get the json that contains the recipies.
         url: queryUrl,
         method: "GET"
-      }).then(function(response) { //Stores the JSON obtained in the temp variable "response"
+      }).then(function (response) { //Stores the JSON obtained in the temp variable "response"
         storeResponse = response; //Saves JSON response to local variable in case we need to use response in the future.
         console.log(storeResponse); //Console log the JSON.
         drinks.pullRecipes(); //Calls the "printer"
       });
     },
-  
-    pullRecipes: function() {
+
+    pullRecipes: function () {
       var counta = countStart //Assign value of general counters in order to avoid play with the general counter.
       var countb = countEnd; //Assign value of general counters in order to avoid play with the general counter.
       for (counta; counta < countb; counta++) { //Pulls the detailed recipe of each drink and store it inside an array.
@@ -177,14 +231,14 @@ $(document).ready(function() {
         $.ajax({
           url: queryDrink,
           method: "GET"
-        }).then(function(drinkResponse) {
+        }).then(function (drinkResponse) {
           storeDrinks.push(drinkResponse);
         });
       }
       drinks.print(); //Calls the printer function/
     },
-  
-    print: function() {
+
+    print: function () {
       $("#top-recipes").empty(); //Cleans div where recipes are gonna be printed.
       for (countStart; countStart < countEnd; countStart++) { //Creates a card for each drink, includes image and name and all the internal code...
         var col = $("<div>"); //...later process the addition of the ingridients. This function only uses the first pull.
@@ -202,7 +256,7 @@ $(document).ready(function() {
         card.attr('class', "card");
         cardImg.attr('class', "card-image waves-effect waves-block waves-light");
         cardImgSrc.attr('class', 'activator');
-        cardImgSrc.attr('id','card-image');
+        cardImgSrc.attr('id', 'card-image');
         cardImgSrc.attr('src', storeResponse.drinks[countStart].strDrinkThumb);
         cardImg.append(cardImgSrc);
         cardCont.attr('class', 'card-content');
@@ -228,9 +282,9 @@ $(document).ready(function() {
       countStart -= 3; //Return count start to the value befor run this function.
       drinks.list(); //Call the function that 'prints' the ingridients and recipes.
     },
-  
-    list: function() {
-      setTimeout(function() { //Adds a delay of 1 second in order to wait the second pull to finish. (1 Pull per drink).
+
+    list: function () {
+      setTimeout(function () { //Adds a delay of 1 second in order to wait the second pull to finish. (1 Pull per drink).
         for (countStart; countStart < countEnd; countStart++) { //This loop is in charge of print the recipes.
           var g = 0;
           var h = 3;
@@ -273,24 +327,24 @@ $(document).ready(function() {
       }, 1000)
     },
   };
-  
-  $('#food-button').click(function() {
+
+  $('#food-button').click(function () {
     type = "food";
     $("#top-recipes").empty();
     $('#flavorize-button').show();
     $('#search-div').show();
     console.log(type);
   });
-  
-  $('#drink-button').click(function() {
+
+  $('#drink-button').click(function () {
     type = "drinks";
     $("#top-recipes").empty();
     $('#flavorize-button').show();
     $('#search-div').show();
     console.log(type);
   });
-  
-  $('#flavorize-button').click(function() {
+
+  $('#flavorize-button').click(function () {
     location.hash = "top-recipes";
     if (type === "food") {
       food.pull();
@@ -299,22 +353,22 @@ $(document).ready(function() {
       drinks.pull();
     }
   });
-  
-  $("#moreButton").on("click", function() {
+
+  $("#moreButton").on("click", function () {
     general.more();
   });
-  
-  $("#lessButton").on("click", function() {
+
+  $("#lessButton").on("click", function () {
     general.less();
   });
-  
-    // ref google login button.
-    $("#googleLogin").on("click", function () {
-      googleLogin();
-    });
+
+  // ref google login button.
+  $("#googleLogin").on("click", function () {
+    googleLogin();
+  });
 
   // });
-  
+
   $('.sidenav').sidenav({
     menuWidth: 300,
     edge: 'right',
@@ -322,7 +376,7 @@ $(document).ready(function() {
     draggable: true,
     // onOpen: function(el)
     // onClose: function(el)
-  
+
   });
   // // Show sideNav
   // $('.sidenav').sidenav('show');
@@ -330,16 +384,16 @@ $(document).ready(function() {
   // $('.sidenav').sidenav('hide');
   // // Destroy sideNav
   // $('.sidenav').sidenav('destroy');
-  
+
   $('.chips').chips();
   $('.chips-placeholder').chips({
     placeholder: 'Add ingredient...',
     secondaryPlaceholder: 'add more...',
   });
-  
-  
+
+
 });
-  
+
   // $('.sidenav-trigger').Sidenav({
   //   menuWidth: 300, // Default is 240
   //   closeOnClick: true, // Closes side-nav on <a> clicks, useful for Angular/Meteor
@@ -354,4 +408,3 @@ $(document).ready(function() {
   //   edge: 'right',
   //   closeOnClick: true
   // });
-  
