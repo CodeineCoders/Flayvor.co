@@ -389,8 +389,11 @@ if (user != null) {
   // ref google login button.
   $("#googleLogin").on("click", function () {
     googleLogin();
+    $("#userName").append("Welcome " + profile.displayName);
 
   });
+
+  $("#userName").append("Welcome " + profile.displayName);
 
   // });
 
