@@ -80,8 +80,6 @@ $(document).ready(function () {
       var token = result.credential.accessToken;
       console.log(user)
       console.log(token)
-
-      $("#contact-us").text("<p>" + profile.displayName + "</p>");
     });
   }
 
@@ -90,8 +88,6 @@ if (user != null) {
   user.providerData.forEach(function (profile) {
     console.log("  Name: " + profile.displayName);
     console.log("  Email: " + profile.email);
-
-    $("#contact-us").text("<p>" + profile.displayName + "</p>");
   });
 }
 
