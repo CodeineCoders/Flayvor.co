@@ -84,13 +84,12 @@ $(document).ready(function () {
   }
 
   var user = firebase.auth().currentUser;
-
-
 if (user != null) {
   user.providerData.forEach(function (profile) {
     console.log("  Name: " + profile.displayName);
     console.log("  Email: " + profile.email);
-    $("#userName").append("<p>" + profile.displayName + "</p>");
+
+    $("#contact-us").text("<p>" + profile.displayName + "</p>");
   });
 }
 
