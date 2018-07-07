@@ -69,9 +69,6 @@ $(document).ready(function () {
   var database = firebase.database();
 
 
-
-
-
   function googleLogin() {
     // Start a sign in process for an unauthenticated user.
     var provider = new firebase.auth.GoogleAuthProvider();
@@ -81,15 +78,13 @@ $(document).ready(function () {
     firebase.auth().signInWithPopup(provider).then(function (result) {
       var user = result.user;
       var token = result.credential.accessToken;
+
+      document.write("Hello");
       console.log(user)
       console.log(token)
     });
   }
 
-
-
-
-  
   var historySearch = {
 
     read: function () {
