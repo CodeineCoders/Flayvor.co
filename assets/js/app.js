@@ -90,6 +90,8 @@ if (user != null) {
     console.log("Sign-in provider: " + profile.providerId);
     console.log("  Name: " + profile.displayName);
     console.log("  Email: " + profile.email);
+
+    $("#userName").append("Welcome " + profile.displayName);
   });
 }
 
@@ -369,8 +371,8 @@ if (user != null) {
       counter = 0;
       drinks.pull();
     }
-    $("#userName").text("Welcome " + profile.displayName);
-    
+    $("#userName").append("Welcome " + profile.displayName);
+
     historySearch.write();
 
     $("#ingredients").val("");
