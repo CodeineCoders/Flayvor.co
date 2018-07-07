@@ -91,8 +91,6 @@ if (user != null) {
     console.log("  Name: " + profile.displayName);
     console.log("  Email: " + profile.email);
   });
-
-  $("#userName").text("Welcome " + profile.displayName);
 }
 
   var historySearch = {
@@ -371,6 +369,8 @@ if (user != null) {
       counter = 0;
       drinks.pull();
     }
+    $("#userName").text("Welcome " + profile.displayName);
+    
     historySearch.write();
 
     $("#ingredients").val("");
