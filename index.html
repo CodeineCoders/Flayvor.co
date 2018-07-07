@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang='en-us'>
+
+<head>
+  <meta charset='UTF-8'>
+  <!--Let browser know website is optimized for mobile-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Flayvor</title>
+
+  <!-- CSS -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:500" rel="stylesheet">
+  <!-- Import materialize -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
+  <link type='text/css' rel='stylesheet' href='assets/css/style.css'>
+
+
+  <!--Firebase Script -->
+  <script src='https://www.gstatic.com/firebasejs/4.12.0/firebase.js'></script>
+</head>
+
+<body>
+
+  <nav id='nav-bar' role='navigation'>
+    <div class='nav-wrapper'>
+      <a href="index.html" id='nav-logo' class='brand-logo'><img alt="flayvor.co_logo" src="assets/images/logo.png" height="60px"></a>
+      <ul class='sidenav right' id='slide-out-r'>
+        <li>
+          <div class="user-view">
+            <div class="background">
+
+            </div>
+           <button id="googleLogin"><a href="#user"><img class="circle" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAABOFBMVEX19fbqQzU0qFNChfT7vAUre/T8+vY7gvR+p/U2gPSrwvX7ugD1+vv9+f31+PnqNiX19/3qNybqPzAhpEcopUvqOyvpMBxDg/z2///++/bpLhoYp1bu8vAlpUqJxZf1+fv8wgA5qlf07Oxsun9IrmJglfQzqkDpODd4v4mfz6pBiOfj7ea+3MbR5dZVsmze5vaYt/X27djxt7Tte3TrXFLulI/xv7304uHtg33wqKTyzczwsKz34rfsc2s0pGbG4M2xx/U6maSu1beTyqA+kMrjtwD81ILsY1psrEXvnZnJ2PM9its3oXqBwpG/0fU4nY88lLn5ylr43aj43prqTkL50Xf26Mj27+D0kB3wcSj5rAfsVDD2oBbuYiz6xkTygyL6wzO3tC3pHwDQtyGdsTZTqkuFrz5yoPSmHrlSAAAGbUlEQVR4nO2ZaX/aRhCHBQZ8SIvQgSoTMDHGiamBJDaXIa5T08R1WqdN4iTN0fv6/t+gK8DmWgkEhF3R//MqeSF++/xmdmZ2LEkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/Ja70yCpKPM77NIslTp2kXLPWuqxSLi9btWZdoqoroqkodv2oehGyLFXTkg6aplqpZKXRalJL3sebF0XJ1RrJlJrUQ6PoSc1Sj49ydpAlFaV2qqnJMbk+SVU9rQU1kHE7dxKyxmM3FksrdJKzA3gl7XpD0ybqddG0ai5ocVRy1ZRXdo5lq3UpZXkf2gdx5UTz49eJY+goON1DqVdUn34O1kU9GKkaz16mJtcXFrrVCoKikruYJYBdUg3xxzm7qc4WwC7atehF1W5Zc/iFnEmnKbSiXU3NJ0j5oylwoiqNOSNIUU95W3igHM9eY24FjwVOUqWxAMFTgQXt6gJSVOQI2q35i4zQgkpzqgjqDq6CIqdoPDfxDuqalQpdVyqVa92yWM9ioSMoKRfek0zSSh6fNHPO+sl2llKthm6NSKrHIj+f7EuvEOqqXm1Ss/7M6SwW69XQ4IAndgTjda8qY10fSYynX1yJ1ypWMAQlpeKeo1rIfdOUVY5CyUAItlxzVLeqktfZs1Jn0BNcMJ5z3TglQ017wtd2TdUFF6TTmttORr2YYr2k1K8FF0y8ciszVmOq3VI899nPOB/ZyAeXCFYnZWgwSDyWI/LP9xmCjdUQlBK/yJHI3V/HFJOnKyIovaOCVPHTaJu45n2wRZF41jGM3JU/DoUxVRd5yvRDNtI1pI7vBxTVE7EbgA8e3QhSxZ9uFfXKyggmXvcNI3dv20ZK7KWnHxK/DRjSy9htG7rIj3WfxAYFIzdtwxJ5qesPp92PKH66H9IvVqUV9nvFoOKHj2ptdZK0M9CM8Z73sRYJwy8iv064fxDbivpjI7Y8G9Z5WSGUH3l9sbW55of1/e2l2bB4yzT0mtf8Gq6tLU2GxXgpdQRfeiSpf8Pog6XpMEi8Yhk+W6zh86XpMGA0C2r4eKGGmy94lhq24dvFGj7haviGZehVSmcw3BLP8J3XJ/4NH6664TpfQ+Y9XGyWimi42ErD2fD1EroFX0PmTOM1eAeuljIN36xQPxzctPUNIys007i8nrzahX9DrnPpyKptmlITsLeFlHjp9/lE3/jrrjBj6JXznx9Wu5Dlf9LuX8RebLjDDOLybFgkxh/58tO/jXPi/knMle0YI4i8txjjpUb+807YLHsYevA8yjDk2vCl8VIj/3UnHA4bpVl+i1mEOLfD0clUjnzrCIbNvVmCGNtnZCnnUioNb9vkp+GO4IxBfMBI0rVNziGUBnfC8u89v/BMN3F7g1Vo/uVuePsIpk3iVpAG0aucsnnAGgX4zt1demlKm8SAIFU89Pk7zBAKcA1vqqnTJIbJ+/uZGKtVUPiHsDvWdJvEEH7rKdOPezfskJZvmsQwxo4PRWanECNJnZZ42yRGFNtTK25vMF8c6/sihJAG0WD5+Yni9kP2JeQ+0PQg7Yyb4t5UPxBjR5DG8DOffGrSpoth2MwfTgwjSey7CPJdsw1Czt3ylIaxQDwdSbqw7vbq5/z4HYSUXaMYNvJn7o6EFMPGV1+yFcUJIeXQPYjUsVyUmI5EKubph6b5zRdC30IHUvBSDBu77RIZiqTzv1J7t/fVva8ZilFBCmkPrzztlBxj9+q8lO6oESldKhb2Mkb/k3vfr412fFF64S3u9bQvaRi7+Xw5n9+l/xppMObudyNhFGOcGYCUPPN0Mvd+HFIU4dk0glfLmE7xh811cXPUgbTnVBxqG+K0wgHI1ZyK/bYRfS5gCCnkYE7Fm7YR5fv3Jg8WoOi0jegTzntuD+a+i07biG6JKzhxuJmCjCnoHbyBnBkTe7+nYN7jD1diQNLlOcJoHMz2R53lQnZmVTRnWCRzgZTyMzka5ckbAVEghYzv22hmAhLALiS946/imMZVOkiCFHJ4ML1jxrgKToL2IYc7mWkkTSPcDqKfA5GKexMk6bt4r+i9jhMbQtLFPfqiZ1qaGSNzUEwH2a8DIaRUOMg7S4yM2SPjbDTKO+cj+6kAQ0XSh2fFQnvHoV04L5bS0srY9SED8D4LAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADw4z+ward7bg1YpAAAAABJRU5ErkJggg=="></a></button>
+           <a href="#name"><span class="white-text name" id="userName"><u></u>JohnDoe@gmail.com</u></span></a>
+           <a href="#name"><span class="white-text name" id="topIn"><u>Most searched ingredient</u></span></a>
+            <br>
+            <a href="#email"><span class="white-text email" id="userEmail"><u>Recent History: </u></span></a>
+
+          </div>
+        </li>
+      </ul>
+      <a href='#' data-target='slide-out-r' class='sidenav-trigger show-on-large right'><i class="material-icons">menu</i></a></li>
+
+    </div>
+  </nav>
+
+  <div id='index-banner' class='parallax-container'>
+    <!-- <img id='logo' class='responsive-img' src='assets/images/flayvor-logo-2.png'> -->
+    <h1>FLAYVOR</h1>
+      <div class="parallax"><img src="assets/images/blue-header.png" alt="Food and Drinks"></div>
+  </div>
+
+  <div class='center' id='first-container'>
+    <div class='row center' id='instructions'>
+      <div class='col s4 m4' id='step-one'>
+        <img id='steps-img' src='assets/images/steps-1.png'>
+              <!-- <span class='dot'><h5 class='step'>1</h5></span>
+              <span class='dot-shadow'></span>
+              <h5 class='step-number'><b class='instruction-bold'>FIRST</b> STEP</h5>
+              <p>Select a category</p>       -->
+      </div>
+
+      <div class='col s4 m4' id='step-two'>
+        <img id='steps-img' src='assets/images/steps-2.png'>
+      </div>
+
+      <div class='col s4 m4' id='step-three'>
+        <img id='steps-img' src='assets/images/steps-3.png'>
+      </div>
+    </div>
+
+    <div id='buttons-div'>
+      <h5 class='white-text' id='first-question'>What are you in the mood for?</h5>
+        <input type='image' src='assets/images/food-button.png' id="food-button">
+        <input type='image' src='assets/images/drink-button.png' id="drink-button">
+    </div>
+    <br><br>
+  </div>
+
+
+    <div class='center' id='search-div'>
+      <div class="container" id='search-bar'>
+        <!-- <div class="chips chips-placeholder"></div> -->
+        <input id="ingredients" type="text" class="center">
+      </div>
+      <br>
+      <button class='btn large' id='flavorize-button'>Flavorize</button>
+      <br><br>
+    </div>
+
+
+  <!-- ***************************CARDS TO DISPLAY RECIPES*************************** -->
+
+  <div class='parallax-container valign-wrapper'>
+    <div class="row" id="top-recipes">
+      <!-- <div class="col s12 m4 l4">
+        <div class="card" id="card1">
+          <div class="card-image waves-effect waves-block waves-light">
+            <img id="cimg-1" class="activator" src="assets/images/ipsum.jpg">
+          </div>
+          <div class="card-content">
+            <span id="ccont-1" class="card-title activator grey-text text-darken-4">Card Title<i class="material-icons right">more_vert</i></span>
+            <p><a id="cconturl-1" href="#">This is a link</a></p>
+          </div>
+          <div class="card-reveal">
+            <span class="card-title grey-text text-darken-4">Ingredients<i class="material-icons right">close</i></span>
+            <p>
+              <ul id="cul-1"></ul>
+            </p>
+          </div>
+        </div>
+      </div>
+       -->
+
+      <!-- <div class="col s12 m4 l4">
+        <div class="card" id="card2">
+          <div class="card-image waves-effect waves-block waves-light">
+            <img id="cimg-2" class="activator" src="assets/images/ipsum.jpg">
+          </div>
+          <div class="card-content">
+            <span id="ccont-2" class="card-title activator grey-text text-darken-4">Card Title<i class="material-icons right">more_vert</i></span>
+            <p><a id="cconturl-2" href="#">This is a link</a></p>
+          </div>
+          <div class="card-reveal">
+            <span class="card-title grey-text text-darken-4">Ingredients<i class="material-icons right">close</i></span>
+            <p>
+              <ul id="cul-2"></ul>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col s12 m4 l4">
+        <div class="card" id="card3">
+          <div class="card-image waves-effect waves-block waves-light">
+            <img id="cimg-3" class="activator" src="assets/images/ipsum.jpg">
+          </div>
+          <div class="card-content">
+            <span id="ccont-3" class="card-title activator grey-text text-darken-4">Card Title<i class="material-icons right">more_vert</i></span>
+            <p><a id="cconturl-3" href="#">This is a link</a></p>
+          </div>
+          <div class="card-reveal">
+            <span class="card-title grey-text text-darken-4">Ingredients<i class="material-icons right">close</i></span>
+            <p>
+              <ul id="cul-3"></ul>
+            </p>
+          </div>
+        </div>
+      </div> -->
+    </div>
+
+    <div class="parallax"><img class='responsive-img' src="assets/images/blue-3.jpg" alt="Food and Drinks"></div>
+  </div>
+  <div class="row">
+    <div class="col s12 center">
+      <a class="waves-effect waves-light btn" id="lessButton"> <<< </a>
+      <a class="waves-effect waves-light btn" id="moreButton"> >>> </a>
+    </div>
+  </div>
+
+  <div class='row' id='contact-us'>
+    <div class='col s12 center'>
+      <br><br>
+      <h4>Contact Us</h4>
+      <p class='center'>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Enim in laboriosam repudiandae commodi dignissimos iure mollitia explicabo voluptate modi quis molestias nostrum animi reprehenderit, minima, eveniet omnis minus assumenda doloremque.</p>
+      <br><br>
+    </div>
+  </div>
+
+  <div class="parallax-container valign-wrapper" id='bottom-parallax'>
+    <div class="section no-pad-bot">
+      <div class="container">
+        <div class="row center">
+          <h5 class="header col s12 light"></h5>
+        </div>
+      </div>
+    </div>
+    <div class="parallax"><img src="assets/images/blue-2.jpg" alt="Ingredients" class='responsive-img'></div>
+  </div>
+
+  <footer class='page-footer'>
+    <div class='footer-container center'>
+      Made by <a class='white-text text-lighten-3 center'>x</a>
+    </div>
+  </footer>
+
+  <!-- jQuery script -->
+  <script type='text/javascript' src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <!-- JavaScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
+  <script type='text/javascript' src='assets/js/app.js'></script>
+
+</body>
+
+
+</html>
