@@ -80,6 +80,8 @@ $(document).ready(function () {
       var token = result.credential.accessToken;
       console.log(user)
       console.log(token)
+
+      $("#contact-us").text("<p>" + profile.displayName + "</p>");
     });
   }
 
