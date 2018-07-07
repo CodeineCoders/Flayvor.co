@@ -87,10 +87,8 @@ $(document).ready(function () {
 
 if (user != null) {
   user.providerData.forEach(function (profile) {
-    console.log("Sign-in provider: " + profile.providerId);
     console.log("  Name: " + profile.displayName);
     console.log("  Email: " + profile.email);
-
     $("#userName").append("Welcome " + profile.displayName);
   });
 }
@@ -392,8 +390,6 @@ if (user != null) {
     $("#userName").append("Welcome " + profile.displayName);
 
   });
-
-  $("#userName").append("Welcome " + profile.displayName);
 
   // });
 
