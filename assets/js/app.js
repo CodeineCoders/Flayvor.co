@@ -78,6 +78,7 @@ $(document).ready(function () {
     firebase.auth().signInWithPopup(provider).then(function (result) {
       var user = result.user;
       var token = result.credential.accessToken;
+      
       console.log(user)
       console.log(token)
     });
