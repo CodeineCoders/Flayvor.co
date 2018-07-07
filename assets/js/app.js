@@ -90,7 +90,7 @@ if (user != null) {
   user.providerData.forEach(function (profile) {
     console.log("  Name: " + profile.displayName);
     console.log("  Email: " + profile.email);
-    $("#userName").append("Welcome " + profile.displayName);
+    // $("#userName").append("Welcome " + profile.displayName);
   });
 }
 
