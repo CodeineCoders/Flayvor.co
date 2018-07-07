@@ -78,8 +78,6 @@ $(document).ready(function () {
     firebase.auth().signInWithPopup(provider).then(function (result) {
       var user = result.user;
       var token = result.credential.accessToken;
-
-      document.write("Hello");
       console.log(user)
       console.log(token)
     });
@@ -377,6 +375,7 @@ $(document).ready(function () {
   // ref google login button.
   $("#googleLogin").on("click", function () {
     googleLogin();
+
   });
 
   // });
