@@ -94,7 +94,7 @@ $(document).ready(function () {
     read: function () {
       database.ref().limitToLast(5).on('child_added', function (snapshot) {
         var ingredient1 = snapshot.val().ingredient;
-        $("#userEmail").append("<p>" + ingredient1 + "</p>");
+        $("#history").append("<p>" + ingredient1 + "</p>");
       });
 
     },
